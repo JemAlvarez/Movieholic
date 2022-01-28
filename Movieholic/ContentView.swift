@@ -3,9 +3,11 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var sidebarViewModel = SidebarViewModel()
+    
     var body: some View {
-        Text("Hello, world!")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        MainView()
+            .environmentObject(sidebarViewModel)
     }
 }
 
