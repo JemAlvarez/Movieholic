@@ -12,3 +12,8 @@ struct FeaturedMoviesDataModel: Decodable { // movie JSON data model
     let release_date: String
     let vote_average: Double
 }
+
+struct FeaturedMoviesDataModelBase: Decodable { // base json
+    let page: Int
+    let results: [FeaturedMoviesDataModel]
+}

@@ -5,7 +5,7 @@ import Foundation
 // featured (popular, now playing, top rated, upcoming) movies
 // featured (popular, on air, airing today, top rated) movies
 
-struct FeaturedModel: Identifiable {
+struct FeaturedModel {
     let id: Int
     
     let posterUrl: String?
@@ -20,4 +20,9 @@ struct FeaturedModel: Identifiable {
     let overview: String
     let genres: [String]
     let voteAverage: Double
+}
+
+struct FeaturedModelBase {
+    let page: Int
+    let results: [FeaturedModel]
 }

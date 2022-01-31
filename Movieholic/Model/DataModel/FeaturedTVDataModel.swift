@@ -12,3 +12,8 @@ struct FeaturedTVDataModel: Decodable { // tv JSON data model
     let first_air_date: String
     let vote_average: Double
 }
+
+struct FeaturedTVDataModelBase: Decodable { // base json
+    let page: Int
+    let results: [FeaturedTVDataModel]
+}
