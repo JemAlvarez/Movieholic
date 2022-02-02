@@ -3,9 +3,9 @@
 import Foundation
 
 // featured (popular, now playing, top rated, upcoming) movies
-// featured (popular, on air, airing today, top rated) movies
+// featured (popular, on air, airing today, top rated) tv
 
-struct FeaturedModel {
+struct FeaturedModel: Identifiable {
     let id: Int
     
     let posterUrl: String?

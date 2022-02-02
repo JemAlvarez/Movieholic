@@ -7,16 +7,18 @@ struct MainView: View {
     
     var body: some View {
         ZStack {
-            // different views
-            switch sidebarViewModel.selectedView {
-            case 1:
-                Text("Movies")
-            case 2:
-                Text("TV Shows")
-            case 3:
-                Text("People")
-            default:
-                FeaturedView()
+            VStack {
+                // different views
+                switch sidebarViewModel.selectedView {
+                case 1:
+                    Text("Movies")
+                case 2:
+                    Text("TV Shows")
+                case 3:
+                    Text("People")
+                default:
+                    FeaturedView()
+                }
             }
             
             // side bar view

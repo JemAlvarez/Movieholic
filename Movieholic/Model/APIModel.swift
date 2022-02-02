@@ -146,6 +146,11 @@ extension APIModel {
     // category of requests (popular, top rated, upcoming)
     enum RequestCategory: String {
         case popular = "/popular"
+        case topRated = "/top_rated"
+        case nowPlayingMovies = "/now_playing"
+        case upcomingMovies = "/upcoming"
+        case onAirTVs = "/on_the_air"
+        case airingTodayTVs = "/airing_today"
     }
 }
 

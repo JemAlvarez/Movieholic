@@ -3,7 +3,17 @@
 import SwiftUI
 
 class FeaturedViewModel: ObservableObject {
-    @Published var featuredData: FeaturedModelBase? = nil
+    // storing data
+    @Published var popular: FeaturedModelBase? = nil
+    @Published var topRated: FeaturedModelBase? = nil
+    @Published var nowPlayingMovies: FeaturedModelBase? = nil
+    @Published var upcomingMovies: FeaturedModelBase? = nil
+    @Published var onAirTVs: FeaturedModelBase? = nil
+    @Published var airingTodayTVs: FeaturedModelBase? = nil
+    
+    // segmented pickers
+    @Published var popularSelection = 0
+    @Published var topRatedSelection = 0
     
     // request featured data
     @MainActor // run on main thread
@@ -15,3 +25,4 @@ class FeaturedViewModel: ObservableObject {
         }
     }
 }
+
