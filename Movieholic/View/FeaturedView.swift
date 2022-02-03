@@ -8,11 +8,8 @@ struct FeaturedView: View {
     var body: some View {
         ScrollView {
             VStack (spacing: 30) {
-                VStack {
-                    // now playing
-                    rowTitle(title: "Now Playing Movies", data: vm.nowPlayingMovies)
-                    FeaturedRowView(data: vm.nowPlayingMovies)
-                }
+                // now playing
+                CarouselView(data: vm.nowPlayingMovies)
                 
                 VStack {
                     // on air tvs
@@ -47,6 +44,7 @@ struct FeaturedView: View {
             
             FooterAttributionView()
         }
+        .ignoresSafeArea()
         .onChange(of: vm.popularSelection) { _ in // toggle between popular movies and tv shows
             vm.request(for: vm.popularSelection == 0 ? .movie : .tv, in: .popular) { fetchedData in
                 vm.popular = fetchedData

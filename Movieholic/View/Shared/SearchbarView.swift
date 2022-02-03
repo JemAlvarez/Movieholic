@@ -10,17 +10,21 @@ struct SearchbarView: View {
             HStack {
                 Spacer() // move right
                 
-                if vm.showingBar {
-                    barView() // search bar
+                HStack {
+                    if vm.showingBar {
+                        barView() // search bar
+                    }
+                    
+                    toggleSearchbarButton() // toggle searchbar
                 }
-                
-                toggleSearchbarButton() // toggle searchbar
+                .frame(maxWidth: vm.showingBar ? Sizes.searchbarWidth * 1.5 : 40)
+                .frame(height: 40)
+                .background(VisualEffect(material: .popover, blendingMode: .withinWindow).clipShape(Capsule()))
             }
             
             Spacer() // move up
         }
         .padding()
-        .ignoresSafeArea()
     }
 }
 
@@ -79,9 +83,8 @@ extension SearchbarView {
                 .textFieldStyle(.plain)
                 .frame(width: vm.searchbarWidth)
                 .padding(.vertical, 5) // vertical padding
-                .padding(.trailing, 20) // horizontal padding
+                .padding(.trailing, 25) // horizontal padding
                 .padding(.leading, 30) // make space for magnifying glass icon
-                .background(RoundedRectangle(cornerRadius: 99, style: .continuous).fill(Color.secondary.opacity(0.4)))
                 .foregroundColor(Color(Colors.accent.rawValue))
             
             ZStack {
@@ -89,13 +92,13 @@ extension SearchbarView {
                 if vm.searchQuery.isEmpty {
                     Text("Search")
                         .frame(width: Sizes.searchbarWidth, alignment: .leading)
-                        .padding(.leading, 10)
                         .foregroundColor(Color(Colors.accent.rawValue).opacity(0.7))
                 }
                 
                 // magnifying glass icon and cancel button
                 HStack {
                     Image(systemName: "magnifyingglass")
+                        .offset(x: -5)
                     
                     Spacer()
                     
