@@ -17,6 +17,14 @@ struct Sizes {
     // media card size
     static let mediaCardSize: (width: CGFloat, height: CGFloat) = (219, 330)
     
-    // padding for sidebar shrunk
-    static let leftPaddingSidebar = Sizes.sidebarShrunk * 1.3
+    // padding for sidebar
+    static let leftPaddingSidebarShrunk = Sizes.sidebarShrunk * 1.3
+    static let leftPaddingSidebarExpanded = Sizes.sidebarExpanded * 1.3
+    
+    // min window sizes
+    static let minWidth: CGFloat = 700
+    static let minHeight: CGFloat = 750
+    
+    // carousel height
+    static let carouselHeight: CGFloat = 700
 }

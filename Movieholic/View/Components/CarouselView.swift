@@ -1,67 +1,35 @@
 //
 
 import SwiftUI
-import ACarousel
-
 struct CarouselView: View {
-    let data: FeaturedModelBase?
+    let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
+    
+    @State var items: [FeaturedModel]
     
     var body: some View {
         VStack {
-            if data != nil {
-                ACarousel(
-                    data!.results,
-                    spacing: 0,
-                    headspace: 0,
-                    sidesScaling: 0,
-                    isWrap: true,
-                    autoScroll: .active(15)
-                ) { item in
-                    
-                    mediaView(item: item)
-                    
+            GeometryReader { geo in
+                HStack(spacing: 0) {
+                    ForEach(items) { item in
+                        CarouselCardView(item: item)
+                            .frame(width: geo.size.width)
+                    }
                 }
-                .frame(height: 700)
-                .ignoresSafeArea()
+                .offset(x: -geo.size.width * 1)
             }
-        }
-        .frame(height: 700)
-        .background(VisualEffect(material: .menu, blendingMode: .behindWindow))
-    }
-}
-
-extension CarouselView {
-    func mediaView(item: FeaturedModel) -> some View {
-        ZStack {
-            AsyncImage(url: URL(string: item.backdropUrl ?? "")) { img in
-                img
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            } placeholder: {
-                Image(systemName: "photo.on.rectangle.angled")
-                   .font(.largeTitle)
+            .frame(height: Sizes.carouselHeight)
+            .background(VisualEffect(material: .menu, blendingMode: .behindWindow))
+            .onReceive(timer) { input in
+                if let item = items.first {
+                    withAnimation(.spring()) {
+                        let _ = items.removeFirst()
+                    }
+                    
+                    items.append(item)
+                }
             }
             
-            GeometryReader { geo in
-                VStack {
-                    HStack {
-                        ForEach(item.genres, id: \.self) { genre in
-                            GenreTagView(genre: genre)
-                        }
-                    }
-                    
-                    HStack {
-                        Text(item.movieTitle!)
-                            .font(.largeTitle)
-                        
-                        
-                    }
-                    
-                    Text(item.overview)
-                        .multilineTextAlignment(.leading)
-                }
-                .frame(width: geo.size.width * 0.8)
-            }
+            Text("BUTTONS")
         }
     }
 }

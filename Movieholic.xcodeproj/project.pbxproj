@@ -36,6 +36,8 @@
 		CA32B0A927AB4C0B0047AF76 /* FooterAttributionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32B0A827AB4C0B0047AF76 /* FooterAttributionView.swift */; };
 		CA32B0AC27AB51410047AF76 /* ACarousel in Frameworks */ = {isa = PBXBuildFile; productRef = CA32B0AB27AB51410047AF76 /* ACarousel */; };
 		CA32B0AE27AB52640047AF76 /* CarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32B0AD27AB52640047AF76 /* CarouselView.swift */; };
+		CA32B0B027AC8C910047AF76 /* CarouselCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32B0AF27AC8C910047AF76 /* CarouselCardView.swift */; };
+		CA32B0B227AC8D940047AF76 /* VoteProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32B0B127AC8D940047AF76 /* VoteProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +71,8 @@
 		CA32B0A627AB35170047AF76 /* FeaturedRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedRowView.swift; sourceTree = "<group>"; };
 		CA32B0A827AB4C0B0047AF76 /* FooterAttributionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterAttributionView.swift; sourceTree = "<group>"; };
 		CA32B0AD27AB52640047AF76 /* CarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselView.swift; sourceTree = "<group>"; };
+		CA32B0AF27AC8C910047AF76 /* CarouselCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCardView.swift; sourceTree = "<group>"; };
+		CA32B0B127AC8D940047AF76 /* VoteProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteProgressView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,6 +215,8 @@
 				CA32B0A027AAE84C0047AF76 /* GenreTagView.swift */,
 				CA32B0A627AB35170047AF76 /* FeaturedRowView.swift */,
 				CA32B0AD27AB52640047AF76 /* CarouselView.swift */,
+				CA32B0AF27AC8C910047AF76 /* CarouselCardView.swift */,
+				CA32B0B127AC8D940047AF76 /* VoteProgressView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -293,6 +299,7 @@
 			files = (
 				CA0BF95127A3B63500DBB54B /* Sizes.swift in Sources */,
 				CA25F91527A4CA8A000735EB /* FeaturedModel.swift in Sources */,
+				CA32B0B027AC8C910047AF76 /* CarouselCardView.swift in Sources */,
 				CA25F90727A3D8AC000735EB /* Colors.swift in Sources */,
 				CA32B09A27A795990047AF76 /* APIModel.swift in Sources */,
 				CA0BF95727A3CB4200DBB54B /* MainView.swift in Sources */,
@@ -317,6 +324,7 @@
 				CA25F91D27A4D803000735EB /* APIKey.swift in Sources */,
 				CA32B0A327AAF2C60047AF76 /* ProgressViewStyles.swift in Sources */,
 				CA0BF95527A3B6ED00DBB54B /* SidebarViewModel.swift in Sources */,
+				CA32B0B227AC8D940047AF76 /* VoteProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

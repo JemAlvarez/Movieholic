@@ -8,7 +8,7 @@ struct MovieholicApp: App {
         WindowGroup {
             ContentView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity) // resizable
-                .frame(minWidth: 700, minHeight: 750)
+                .frame(minWidth: Sizes.minWidth, minHeight: Sizes.minHeight)
                 .windowBackground()
                 .hostingWindowFinder()
         }

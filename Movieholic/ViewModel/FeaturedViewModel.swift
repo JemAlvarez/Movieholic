@@ -17,9 +17,9 @@ class FeaturedViewModel: ObservableObject {
     
     // request featured data
     @MainActor // run on main thread
-    func request(for requestType: APIModel.RequestType, in requestCategory: APIModel.RequestCategory, callback: @escaping (FeaturedModelBase?) -> Void) {
+    func request(for requestType: APIModel.RequestType, in requestCategory: APIModel.RequestCategory, params: [(key: String, value: String)]? = nil, callback: @escaping (FeaturedModelBase?) -> Void) {
         Task.init {
-            let fetchedData = await APIModel.shared.fetchFeatured(for: requestType, in: requestCategory)
+            let fetchedData = await APIModel.shared.fetchFeatured(for: requestType, in: requestCategory, params: params)
             
             callback(fetchedData)
         }

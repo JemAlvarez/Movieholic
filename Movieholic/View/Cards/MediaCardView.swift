@@ -11,7 +11,7 @@ struct MediaCardView: View {
             ZStack {
                 image()
                 
-                voteGuague()
+                voteProgress()
             }
             .frame(height: Sizes.mediaCardSize.height)
             .background(
@@ -43,14 +43,8 @@ extension MediaCardView {
         }
     }
     
-    func voteGuague() -> some View {
-        ProgressView(value: item.voteAverage, total: 10)
-            .progressViewStyle(GaugeProgressStyle(strokeColor: Color(Colors.accent.rawValue), strokeWidth: 6, size: (35, 35), filledBackground: true, backgroundColor: Color(Colors.accentDark.rawValue)))
-            .tint(Color(Colors.accent.rawValue))
-            .overlay(
-                Text(item.voteAverage == 0 ? "NR" : "\((item.voteAverage / 10) * 100, specifier: "%.0f")%")
-                    .font(.caption)
-            )
+    func voteProgress() -> some View {
+        VoteProgressView(value: item.voteAverage)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing) // take the whole available space and align top right
             .offset(x: 5, y: -10) // offset a little
     }

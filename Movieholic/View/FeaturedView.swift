@@ -9,7 +9,9 @@ struct FeaturedView: View {
         ScrollView {
             VStack (spacing: 30) {
                 // now playing
-                CarouselView(data: vm.nowPlayingMovies)
+                if vm.nowPlayingMovies != nil {
+                    CarouselView(items: vm.nowPlayingMovies!.results)
+                }
                 
                 VStack {
                     // on air tvs
@@ -72,7 +74,7 @@ struct FeaturedView: View {
             }
             
             // upcoming movies
-            vm.request(for: .movie, in: .upcomingMovies) { fetchedData in
+            vm.request(for: .movie, in: .upcomingMovies, params: [(key: "region", value: "US")]) { fetchedData in
                 vm.upcomingMovies = fetchedData
             }
             
@@ -104,7 +106,7 @@ extension FeaturedView {
                 Spacer()
             }
         }
-        .padding(.leading, Sizes.leftPaddingSidebar)
+        .padding(.leading, Sizes.leftPaddingSidebarShrunk)
     }
     
     func rowTitleWithSelection(title: String, selection: Binding<Int>, data: FeaturedModelBase?) -> some View {

@@ -13,7 +13,7 @@ struct FeaturedRowView: View {
                         ForEach(data!.results.indices) { i in
                             if let item = data!.results[i] {
                                 MediaCardView(item: item)
-                                    .padding(.leading, i == 0 ? Sizes.leftPaddingSidebar : 0)
+                                    .padding(.leading, i == 0 ? Sizes.leftPaddingSidebarShrunk : 0)
                             }
                         }
                     } else {

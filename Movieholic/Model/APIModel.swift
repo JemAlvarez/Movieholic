@@ -12,7 +12,7 @@ class APIModel {
     private let backdropWidth = "/original"
     
     // get featured movies and tv
-    func fetchFeatured(for requestType: RequestType, in requestCategory: RequestCategory) async -> FeaturedModelBase? {
+    func fetchFeatured(for requestType: RequestType, in requestCategory: RequestCategory, params: [(key: String, value: String)]? = nil) async -> FeaturedModelBase? {
         // initial base model & page number
         var featuredModelBase: FeaturedModelBase? = nil
         var pageNum = 1
@@ -28,7 +28,7 @@ class APIModel {
         // try
         do {
             // await private request for the type and category and retunr nil if not possible
-            guard let featuredData = await self.request(requestType: requestType, requestUrl: requestCategory.rawValue) else { return nil }
+            guard let featuredData = await self.request(requestType: requestType, requestUrl: requestCategory.rawValue, params: params) else { return nil }
             
             // if movie decode movie data model, else decode tv data model
             if requestType == .movie {

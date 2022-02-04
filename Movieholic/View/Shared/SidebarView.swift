@@ -9,18 +9,40 @@ struct SidebarView: View {
         HStack {
             VStack (spacing: 0) {
                 ForEach(vm.sidebarButtons.indices, id: \.self) { i in
-                    sideBarButtonView(i: i)
+                    if i != vm.sidebarButtons.count - 1 {
+                        sideBarButtonView(i: i)
+                    }
                 }
                 
                 Spacer()
-            }
-            .frame(width: vm.isHoveringSidebar ? Sizes.sidebarExpanded : Sizes.sidebarShrunk)
-            .background(VisualEffect(material: .popover, blendingMode: .withinWindow).ignoresSafeArea())
-            .onHover { hover in
-                withAnimation(.spring()) {
-                    vm.isHoveringSidebar = hover
+                
+                Button(action: {
+                    withAnimation(.spring()) {
+                        vm.sidebarExpanded.toggle()
+                    }
+                }) {
+                    HStack (spacing: vm.sidebarExpanded ? 15 : 0) {
+                        Image(systemName: vm.sidebarButtons.last?.icon ?? "")
+                            .font(Sizes.fontSizeNavButtons)
+                            .symbolRenderingMode(.hierarchical)
+                            .frame(width: vm.sidebarExpanded ? Sizes.sidebarExpanded * 0.3 : Sizes.sidebarShrunk, alignment: .center)
+                            .padding(.leading, vm.sidebarExpanded ? Sizes.sidebarExpanded * 0.3 * 0.5 : 0)
+                        
+                        Text(vm.sidebarExpanded ? vm.sidebarButtons.last?.name ?? "" : "")
+                            .font(Sizes.fontSizeNavText)
+                            .frame(width: vm.sidebarExpanded ? Sizes.sidebarExpanded * 0.7 : 0, alignment: .leading)
+                            .foregroundColor(.primary)
+                    }
                 }
+                    .buttonStyle(.borderless)
+                    .padding(.bottom, 50)
+                    .foregroundColor(.primary)
+                    .onHover { hovering in
+                        changeNSCursor(to: .pointingHand, for: hovering)
+                    }
             }
+            .frame(width: vm.sidebarExpanded ? Sizes.sidebarExpanded : Sizes.sidebarShrunk)
+            .background(VisualEffect(material: .popover, blendingMode: .withinWindow).ignoresSafeArea())
             
             Spacer()
         }
@@ -42,17 +64,17 @@ extension SidebarView {
             Button(action: {
                 vm.selectedView = i
             }) {
-                HStack (spacing: vm.isHoveringSidebar ? 15 : 0) {
+                HStack (spacing: vm.sidebarExpanded ? 15 : 0) {
                     Image(systemName: button.icon)
                         .font(Sizes.fontSizeNavButtons)
                         .symbolRenderingMode(.hierarchical)
-                        .frame(width: vm.isHoveringSidebar ? Sizes.sidebarExpanded * 0.3 : Sizes.sidebarShrunk, alignment: .center)
-                        .padding(.leading, vm.isHoveringSidebar ? Sizes.sidebarExpanded * 0.3 * 0.5 : 0)
+                        .frame(width: vm.sidebarExpanded ? Sizes.sidebarExpanded * 0.3 : Sizes.sidebarShrunk, alignment: .center)
+                        .padding(.leading, vm.sidebarExpanded ? Sizes.sidebarExpanded * 0.3 * 0.5 : 0)
                         .foregroundColor(vm.selectedView == i ? Color(Colors.accent.rawValue) : Color.primary)
                     
-                    Text(vm.isHoveringSidebar ? button.name : "")
+                    Text(vm.sidebarExpanded ? button.name : "")
                         .font(Sizes.fontSizeNavText)
-                        .frame(width: vm.isHoveringSidebar ? Sizes.sidebarExpanded * 0.7 : 0, alignment: .leading)
+                        .frame(width: vm.sidebarExpanded ? Sizes.sidebarExpanded * 0.7 : 0, alignment: .leading)
                         .foregroundColor(.primary)
                 }
             }
