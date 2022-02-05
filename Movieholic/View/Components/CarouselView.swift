@@ -48,10 +48,17 @@ extension CarouselView {
                 previousPage()
                 restartTimer()
             }) {
-                Text("Previous")
+                Image(systemName: "chevron.left")
+                    .foregroundColor(Color(Colors.accent.rawValue))
+                    .frame(width: 40, height: 40)
+                    .background(VisualEffect(material: .hudWindow, blendingMode: .behindWindow))
+                    .clipShape(Circle())
             }
             .buttonStyle(.borderless)
             .padding(.leading, Sizes.sidebarShrunk)
+            .onHover { hovering in
+                changeNSCursor(to: .pointingHand, for: hovering)
+            }
             
             Spacer()
             
@@ -70,9 +77,16 @@ extension CarouselView {
                 nextPage()
                 restartTimer()
             }) {
-                Text("Previous")
+                Image(systemName: "chevron.right")
+                    .foregroundColor(Color(Colors.accent.rawValue))
+                    .frame(width: 40, height: 40)
+                    .background(VisualEffect(material: .hudWindow, blendingMode: .behindWindow))
+                    .clipShape(Circle())
             }
             .buttonStyle(.borderless)
+            .onHover { hovering in
+                changeNSCursor(to: .pointingHand, for: hovering)
+            }
         }
         .padding(.horizontal)
     }
@@ -93,7 +107,7 @@ extension CarouselView {
         // pagination
         let nextPageNum = currentPageNum + 1
         
-        withAnimation {
+        withAnimation(.spring()) {
             if nextPageNum < numButtons { // if not last page
                 currentPageNum = nextPageNum // go to next page
             } else { // else
@@ -111,7 +125,7 @@ extension CarouselView {
         // pagination
         let previousPageNum = currentPageNum - 1
         
-        withAnimation {
+        withAnimation(.spring()) {
             if previousPageNum >= 0 { // if not first page
                 currentPageNum = previousPageNum // go to previous page
             } else { // else
