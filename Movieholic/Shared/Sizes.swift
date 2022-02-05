@@ -27,4 +27,7 @@ struct Sizes {
     
     // carousel height
     static let carouselHeight: CGFloat = 700
+    
+    // spcaing for the cards vertically
+    static let cardSpacing: CGFloat = 30
 }

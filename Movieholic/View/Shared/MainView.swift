@@ -11,7 +11,7 @@ struct MainView: View {
                 // different views
                 switch sidebarViewModel.selectedView {
                 case 1:
-                    Text("Movies")
+                    MoviesView()
                 case 2:
                     Text("TV Shows")
                 case 3:

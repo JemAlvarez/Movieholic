@@ -7,10 +7,12 @@ struct FeaturedView: View {
     
     var body: some View {
         ScrollView {
-            VStack (spacing: 30) {
+            VStack (spacing: Sizes.cardSpacing) {
                 // now playing
                 if vm.nowPlayingMovies != nil {
                     CarouselView(items: vm.nowPlayingMovies!.results)
+                } else {
+                    CarouselView(items: [])
                 }
                 
                 VStack {
@@ -74,7 +76,7 @@ struct FeaturedView: View {
             }
             
             // upcoming movies
-            vm.request(for: .movie, in: .upcomingMovies, params: [(key: "region", value: "US")]) { fetchedData in
+            vm.request(for: .movie, in: .upcomingMovies) { fetchedData in
                 vm.upcomingMovies = fetchedData
             }
             

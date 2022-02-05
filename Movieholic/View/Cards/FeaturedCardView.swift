@@ -2,7 +2,7 @@
 
 import SwiftUI
 
-struct MediaCardView: View {
+struct FeaturedCardView: View {
     var item: FeaturedModel
     @State var hovering = false
     
@@ -29,7 +29,7 @@ struct MediaCardView: View {
     }
 }
 
-extension MediaCardView {
+extension FeaturedCardView {
     func image() -> some View {
         AsyncImage(url: URL(string: item.posterUrl ?? "")) { img in
             img

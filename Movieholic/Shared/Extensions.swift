@@ -28,3 +28,23 @@ extension View { // change cursor
          bool ? cursor.push() : NSCursor.pop()
     }
 }
+
+extension Date {
+    // get string from date
+    func getString(format: String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = format
+        
+        return formatter.string(from: self)
+    }
+}
+
+extension String {
+    // get date from string
+    func getDate(format: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = format
+        
+        return formatter.date(from: self)
+    }
+}

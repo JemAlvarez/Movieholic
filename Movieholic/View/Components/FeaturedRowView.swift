@@ -1,6 +1,7 @@
 //
 
 import SwiftUI
+import Introspect
 
 struct FeaturedRowView: View {
     let data: FeaturedModelBase?
@@ -8,11 +9,11 @@ struct FeaturedRowView: View {
     var body: some View {
         VStack {
             ScrollView(.horizontal) {
-                HStack(spacing: 20) {
+                LazyHStack(spacing: 20) {
                     if data != nil {
                         ForEach(data!.results.indices) { i in
                             if let item = data!.results[i] {
-                                MediaCardView(item: item)
+                                FeaturedCardView(item: item)
                                     .padding(.leading, i == 0 ? Sizes.leftPaddingSidebarShrunk : 0)
                             }
                         }

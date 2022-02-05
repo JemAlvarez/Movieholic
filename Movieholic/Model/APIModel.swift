@@ -11,6 +11,39 @@ class APIModel {
     private let posterWidth = "/original"
     private let backdropWidth = "/original"
     
+    // get movies list
+    func fetchMovies(for requestCategory: RequestCategory, params: [(key: String, value: String)]? = nil) async -> MovieListModelBase? {
+        // array of models for the base model
+        var modelsArray: [MovieListModel] = []
+        
+        // try
+        do {
+            // await private request for movies in category and return nil if not possible
+            guard let movieList = await self.request(requestType: .movie, requestUrl: requestCategory.rawValue, params: params) else {return nil}
+            
+            // decoded json data
+            let decodedMoviesListData = try JSONDecoder().decode(MovieListDataModelBase.self, from: movieList)
+            
+            for model in decodedMoviesListData.results {
+                let movieListModel = MovieListModel(
+                    posterUrl: model.poster_path == nil ? nil : "\(imageBaseUrl)\(posterWidth)\(model.poster_path!)",
+                    releaseDate: model.release_date.getDate(format: "yy-MM-dd"),
+                    id: model.id,
+                    title: model.title,
+                    voteAverage: model.vote_average
+                )
+                
+                modelsArray.append(movieListModel)
+            }
+            
+            return MovieListModelBase(page: decodedMoviesListData.page, results: modelsArray, totalPages: decodedMoviesListData.total_pages)
+        } catch {
+            // print error and return nil
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
     // get featured movies and tv
     func fetchFeatured(for requestType: RequestType, in requestCategory: RequestCategory, params: [(key: String, value: String)]? = nil) async -> FeaturedModelBase? {
         // initial base model & page number
@@ -19,11 +52,6 @@ class APIModel {
         
         // initial array of featured model
         var featuredModelArray: [FeaturedModel] = []
-        
-        // date formatter to get date from string
-        let dateFormatter = DateFormatter()
-        // set formatter date format from json data
-        dateFormatter.dateFormat = "yy-MM-dd"
         
         // try
         do {
@@ -45,7 +73,7 @@ class APIModel {
                         id: dataModel.id,
                         posterUrl: dataModel.poster_path == nil ? nil : "\(imageBaseUrl)\(posterWidth)\(dataModel.poster_path!)",
                         backdropUrl: dataModel.backdrop_path == nil ? nil : "\(imageBaseUrl)\(backdropWidth)\(dataModel.backdrop_path!)",
-                        releaseDate: dateFormatter.date(from: dataModel.release_date),
+                        releaseDate: dataModel.release_date.getDate(format: "yy-MM-dd"),
                         firstAirDate: nil,
                         tvName: nil,
                         movieTitle: dataModel.title,
@@ -74,7 +102,7 @@ class APIModel {
                         posterUrl: dataModel.poster_path == nil ? nil : "\(imageBaseUrl)\(posterWidth)\(dataModel.poster_path!)",
                         backdropUrl: dataModel.backdrop_path == nil ? nil : "\(imageBaseUrl)\(backdropWidth)\(dataModel.backdrop_path!)",
                         releaseDate: nil,
-                        firstAirDate: dateFormatter.date(from: dataModel.first_air_date),
+                        firstAirDate: dataModel.first_air_date.getDate(format: "yy-MM-dd"),
                         tvName: dataModel.name,
                         movieTitle: nil,
                         overview: dataModel.overview,
@@ -107,7 +135,7 @@ extension APIModel {
     private func request(requestType: RequestType, requestUrl: String, params: [(key: String, value: String)]? = nil) async -> Data? {
         
         // default url string with the base url + the type of request + the api key
-        var urlString = "\(baseUrl)\(requestType.rawValue)\(requestUrl)?api_key=\(APIKey.apiKey)"
+        var urlString = "\(baseUrl)\(requestType.rawValue)\(requestUrl)?api_key=\(APIKey.apiKey)&region=US"
         
         // add any params to the url string
         if let queryParams = params {
