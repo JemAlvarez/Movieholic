@@ -25,7 +25,7 @@ extension CarouselCardView {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: geo.size.width, height: Sizes.carouselHeight)
                 .clipped()
-                .opacity(0.7)
+//                .opacity(0.7)
         } placeholder: {
             Image(systemName: "photo.on.rectangle.angled")
                .font(.largeTitle)

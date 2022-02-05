@@ -2,34 +2,125 @@
 
 import SwiftUI
 struct CarouselView: View {
-    let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
+    @State var timer = Timer.publish(every: 12, on: .main, in: .common).autoconnect() // timer to auto scroll
+    @State var currentPageNum = 0
     
-    @State var items: [FeaturedModel]
+    let numButtons: Int
+    @State var items: [FeaturedModel] // items
+    
+    init(items: [FeaturedModel]) {
+        self.items = items
+        self.numButtons = items.count
+    }
     
     var body: some View {
-        VStack {
-            GeometryReader { geo in
-                HStack(spacing: 0) {
-                    ForEach(items) { item in
-                        CarouselCardView(item: item)
-                            .frame(width: geo.size.width)
-                    }
+        VStack(spacing: 20) {
+            content()
+            
+            // pagination
+            pagination()
+        }
+        .onReceive(timer) { input in    // timer for autoscrolling
+            nextPage()
+        }
+    }
+}
+
+//MARK: - views extensions
+extension CarouselView {
+    func content() -> some View {
+        GeometryReader { geo in
+            HStack(spacing: 0) {
+                ForEach(items) { item in
+                    CarouselCardView(item: item)
+                        .frame(width: geo.size.width) // window width
                 }
-                .offset(x: -geo.size.width * 1)
             }
-            .frame(height: Sizes.carouselHeight)
-            .background(VisualEffect(material: .menu, blendingMode: .behindWindow))
-            .onReceive(timer) { input in
-                if let item = items.first {
-                    withAnimation(.spring()) {
-                        let _ = items.removeFirst()
-                    }
-                    
-                    items.append(item)
+            .offset(x: -geo.size.width) // offset to second item so the wrapping of the items is not noticeable
+        }
+        .frame(height: Sizes.carouselHeight) // carousel height
+        .background(VisualEffect(material: .menu, blendingMode: .behindWindow)) // material backgroud visible when images loading
+    }
+    
+    func pagination() -> some View {
+        HStack{
+            Button(action: {
+                previousPage()
+                restartTimer()
+            }) {
+                Text("Previous")
+            }
+            .buttonStyle(.borderless)
+            .padding(.leading, Sizes.sidebarShrunk)
+            
+            Spacer()
+            
+            HStack {
+                ForEach(0..<numButtons) {i in
+                    RoundedRectangle(cornerRadius: 99)
+                        .frame(width: currentPageNum == i ? 14 : 7, height: 7)
+                        .foregroundColor(currentPageNum == i ? Color(Colors.accent.rawValue) : .primary)
                 }
+            }
+            .offset(x: Sizes.sidebarShrunk / 2) // center horizontal due to the sidebar
+            
+            Spacer()
+            
+            Button(action: {
+                nextPage()
+                restartTimer()
+            }) {
+                Text("Previous")
+            }
+            .buttonStyle(.borderless)
+        }
+        .padding(.horizontal)
+    }
+}
+
+
+//MARK: - funcs extensions
+extension CarouselView {
+    func nextPage() {
+        if let item = items.first { // if items has a first item (not empty)
+            withAnimation(.spring()) {
+                let _ = items.removeFirst() // remove the first item
             }
             
-            Text("BUTTONS")
+            items.append(item) // append the item to the back (no animation because it causes a weird visual bug)
         }
+        
+        // pagination
+        let nextPageNum = currentPageNum + 1
+        
+        withAnimation {
+            if nextPageNum < numButtons { // if not last page
+                currentPageNum = nextPageNum // go to next page
+            } else { // else
+                currentPageNum = 0 // go to begining
+            }
+        }
+    }
+    
+    func previousPage() {
+        let item = items.removeLast() // remove the last item
+        withAnimation(.spring()) {
+            items.insert(item, at: 0) // insert at the begining
+        }
+        
+        // pagination
+        let previousPageNum = currentPageNum - 1
+        
+        withAnimation {
+            if previousPageNum >= 0 { // if not first page
+                currentPageNum = previousPageNum // go to previous page
+            } else { // else
+                currentPageNum = items.count - 1 // go to end
+            }
+        }
+    }
+    
+    func restartTimer() {
+        timer = Timer.publish(every: 12, on: .main, in: .common).autoconnect() // timer to auto scroll
     }
 }
