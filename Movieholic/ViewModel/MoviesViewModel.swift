@@ -4,7 +4,11 @@ import SwiftUI
 
 class MoviesViewModel: ObservableObject {
     @Published var movies: MovieListModelBase? = nil
-    @Published var category: APIModel.RequestCategory = .popular
+    @Published var category: APIModel.RequestCategory = .popular {
+        didSet {
+            pageNum = 1
+        }
+    }
     @Published var pageNum = 1 {
         didSet {
             Task.init {

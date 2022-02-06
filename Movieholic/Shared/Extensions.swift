@@ -25,7 +25,9 @@ extension View { // set window translucent background
 
 extension View { // change cursor
     func changeNSCursor(to cursor: NSCursor, for bool: Bool) {
-         bool ? cursor.push() : NSCursor.pop()
+        DispatchQueue.main.async {
+            bool ? cursor.push() : NSCursor.pop()
+        }
     }
 }
 

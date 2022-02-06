@@ -1,7 +1,6 @@
 //
 
 import SwiftUI
-import Introspect
 
 struct FeaturedRowView: View {
     let data: FeaturedModelBase?

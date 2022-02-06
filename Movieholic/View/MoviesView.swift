@@ -4,7 +4,7 @@ import SwiftUI
 
 struct MoviesView: View {
     @StateObject var vm = MoviesViewModel()
-    @State var columns = [GridItem(), GridItem()]
+    @State var columns = [GridItem()]
     @State var width: CGFloat = Sizes.minWidth
     
     var body: some View {
@@ -16,6 +16,8 @@ struct MoviesView: View {
             ScrollView {
                 moviesGridView()
                 
+                Spacer()
+                
                 if vm.movies != nil {
                     PaginationView(currentPage: $vm.pageNum, totalPages: vm.movies!.totalPages)
                 }
@@ -23,11 +25,14 @@ struct MoviesView: View {
                 FooterAttributionView()
             }
         }
+        .padding(.leading, Sizes.sidebarShrunk)
         .padding(.top)
         .onChange(of: width) { newVal in
             withAnimation {
                 switch width {
-                case 0..<1000:
+                case 0..<750:
+                    columns = [GridItem()]
+                case 750..<1000:
                     columns = [GridItem(), GridItem()]
                 case 1000..<1300:
                     columns = [GridItem(), GridItem(), GridItem()]
@@ -68,7 +73,7 @@ extension MoviesView {
             
             Spacer()
         }
-        .padding(.leading, Sizes.leftPaddingSidebarShrunk)
+        .padding(.leading)
     }
     
     func moviesGridView() -> some View {
@@ -76,7 +81,6 @@ extension MoviesView {
             if vm.movies != nil {
                 ForEach(vm.movies!.results) { movie in
                     MoviesCardView(item: movie)
-                        .padding(.horizontal, Sizes.cardSpacing)
                 }
             }
         }

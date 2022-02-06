@@ -8,6 +8,9 @@ struct CarouselView: View {
     let numButtons: Int
     @State var items: [FeaturedModel] // items
     
+    @State var hoveringPrevious = false
+    @State var hoveringNext = false
+    
     init(items: [FeaturedModel]) {
         self.items = items
         self.numButtons = items.count
@@ -49,14 +52,19 @@ extension CarouselView {
                 restartTimer()
             }) {
                 Image(systemName: "chevron.left")
-                    .foregroundColor(Color(Colors.accent.rawValue))
+                    .foregroundColor(hoveringPrevious ? .primary : Color(Colors.accent.rawValue))
                     .frame(width: 40, height: 40)
-                    .background(VisualEffect(material: .hudWindow, blendingMode: .behindWindow))
+                    .background(hoveringPrevious ? nil : VisualEffect(material: .hudWindow, blendingMode: .behindWindow))
+                    .background(hoveringPrevious ? Color(Colors.accent.rawValue) : nil)
                     .clipShape(Circle())
             }
             .buttonStyle(.borderless)
             .padding(.leading, Sizes.sidebarShrunk)
             .onHover { hovering in
+                withAnimation {
+                    hoveringPrevious = hovering
+                }
+                
                 changeNSCursor(to: .pointingHand, for: hovering)
             }
             
@@ -78,13 +86,18 @@ extension CarouselView {
                 restartTimer()
             }) {
                 Image(systemName: "chevron.right")
-                    .foregroundColor(Color(Colors.accent.rawValue))
+                    .foregroundColor(hoveringNext ? .primary : Color(Colors.accent.rawValue))
                     .frame(width: 40, height: 40)
-                    .background(VisualEffect(material: .hudWindow, blendingMode: .behindWindow))
+                    .background(hoveringNext ? nil : VisualEffect(material: .hudWindow, blendingMode: .behindWindow))
+                    .background(hoveringNext ? Color(Colors.accent.rawValue) : nil)
                     .clipShape(Circle())
             }
             .buttonStyle(.borderless)
             .onHover { hovering in
+                withAnimation {
+                    hoveringNext = hovering
+                }
+                
                 changeNSCursor(to: .pointingHand, for: hovering)
             }
         }
