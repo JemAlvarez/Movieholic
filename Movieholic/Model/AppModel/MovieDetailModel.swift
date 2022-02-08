@@ -2,7 +2,7 @@
 
 import Foundation
 
-struct MovieDetailDataModel: Codable {
+struct MovieDetailModel: Codable {
     let adult: Int
     let backdrop_path: String?
     let budget: Int
@@ -34,7 +34,7 @@ struct MovieDetailDataModel: Codable {
     }
 }
 
-struct MovieCreditsDataModel: Codable {
+struct MovieCreditsModel: Codable {
     let id: Int
     let cast: [Cast]
     

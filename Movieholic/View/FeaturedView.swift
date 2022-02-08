@@ -4,8 +4,30 @@ import SwiftUI
 
 struct FeaturedView: View {
     @StateObject var vm = FeaturedViewModel()
+    @StateObject var router = Router()
     
     var body: some View {
+        Group {
+            switch router.currentRoute {
+            case .root:
+                root()
+            case .movie(let id):
+                MovieDetailView(id: id)
+            case .tv(let id):
+                Text("TV \(id)")
+            case .people(let id):
+                Text("People \(id)")
+            default:
+                root()
+            }
+        }
+        .transition(.move(edge: .leading))
+        .environmentObject(router)
+    }
+}
+
+extension FeaturedView {
+    func root() -> some View {
         ScrollView {
             VStack (spacing: Sizes.cardSpacing) {
                 // now playing

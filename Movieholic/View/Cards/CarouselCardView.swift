@@ -3,16 +3,26 @@
 import SwiftUI
 
 struct CarouselCardView: View {
+    @EnvironmentObject var router: Router
+    
     let item: MediaModel
     
     var body: some View {
         GeometryReader { geo in
-            ZStack {
-                splashImage(geo: geo)
-                
-                info(geo: geo)
+            Button(action: {
+                router.push(.movie(id: item.id))
+            }) {
+                ZStack {
+                    splashImage(geo: geo)
+                    
+                    info(geo: geo)
+                }
+                .frame(height: Sizes.carouselHeight)
             }
-            .frame(height: Sizes.carouselHeight)
+            .buttonStyle(.borderless)
+            .onHover { hovering in
+                changeNSCursor(to: .pointingHand, for: hovering)
+            }
         }
     }
 }

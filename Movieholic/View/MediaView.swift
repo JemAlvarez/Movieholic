@@ -6,13 +6,36 @@ struct MediaView: View {
     let viewTitle: String
     let viewType: APIModel.RequestType
     
+    @StateObject var router = Router()
+    
     @StateObject var vm = MediaViewModel()
     @State var columns = [GridItem()]
     @State var width: CGFloat = Sizes.minWidth
     
     var body: some View {
-        getWindowSize()
+        getWindowSize() // get window size with geometry reader to dynamically change the columns
         
+        Group {
+            switch router.currentRoute {
+            case .root:
+                root() // main view for this navigation
+            case .movie(let id):
+                MovieDetailView(id: id)
+            case .tv(let id):
+                Text("TV \(id)")
+            case .people(let id):
+                Text("People \(id)")
+            default:
+                root()
+            }
+        }
+        .transition(.move(edge: .leading)) // appear as the default navigation transition
+        .environmentObject(router) // pass the router to child views
+    }
+}
+
+extension MediaView {
+    func root() -> some View {
         VStack {
             headerView()
             

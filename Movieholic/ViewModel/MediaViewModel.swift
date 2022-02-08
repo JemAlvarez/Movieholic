@@ -3,7 +3,8 @@
 import SwiftUI
 
 class MediaViewModel: ObservableObject {
-    var requestType: APIModel.RequestType? = nil
+    var requestType: APIModel.RequestType? = nil // type of view movie/tv/people
+    
     @Published var items: MediaModelBase? = nil
     @Published var category: APIModel.RequestCategory = .popular {
         didSet {
@@ -30,4 +31,3 @@ class MediaViewModel: ObservableObject {
         }
     }
 }
- 

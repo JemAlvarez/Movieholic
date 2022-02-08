@@ -3,31 +3,46 @@
 import SwiftUI
 
 struct MediaCardView: View {
+    @EnvironmentObject var router: Router
+    
     var item: MediaModel
+    
     @State var hovering = false
     
     var body: some View {
-        VStack {
-            ZStack {
-                image()
-                
-                if item.peopleName == nil { // if its not a people fetch
-                    voteProgress()
+        Button(action: {
+            if item.peopleName != nil {
+                router.push(.people(id: item.id))
+            } else if item.tvName != nil {
+                router.push(.tv(id: item.id))
+            } else if item.movieTitle != nil {
+                router.push(.movie(id: item.id))
+            }
+        }) {
+            VStack {
+                ZStack {
+                    image()
+                    
+                    if item.peopleName == nil { // if its not a people fetch
+                        voteProgress()
+                    }
                 }
+                .frame(width: Sizes.mediaCardSize.width, height: Sizes.mediaCardSize.height)
+                .background(
+                    VisualEffect(material: .menu, blendingMode: .behindWindow)
+                        .cornerRadius(13)
+                )
+                .onHover { hovering in
+                    self.hovering = hovering
+                    changeNSCursor(to: .pointingHand, for: hovering)
+                }
+                
+                info()
             }
-            .frame(width: Sizes.mediaCardSize.width, height: Sizes.mediaCardSize.height)
-            .background(
-                VisualEffect(material: .menu, blendingMode: .behindWindow)
-                    .cornerRadius(13)
-            )
-            .onHover { hovering in
-                self.hovering = hovering
-                changeNSCursor(to: .pointingHand, for: hovering)
-            }
-            
-            info()
+            .frame(width: Sizes.mediaCardSize.width)
+            .padding([.top, .trailing], 15)
         }
-        .frame(width: Sizes.mediaCardSize.width)
+        .buttonStyle(.borderless)
     }
 }
 
