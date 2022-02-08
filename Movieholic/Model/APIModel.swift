@@ -11,12 +11,14 @@ class APIModel {
     private let posterWidth = "/original"
     private let backdropWidth = "/original"
     private let profileWidth = "/original"
+    private let youtube = "https://youtube.com/watch?v="
 }
 
 //MARK: - requests
+
+// get lists movies and tv and people
 extension APIModel {
-    // get featured movies and tv
-    func fetchFeatured(for requestType: RequestType, in requestCategory: RequestCategory, params: [(key: String, value: String)]? = nil) async -> MediaModelBase? {
+    func fetchList(for requestType: RequestType, in requestCategory: RequestCategory, params: [(key: String, value: String)]? = nil) async -> MediaModelBase? {
         // initial base model & page number
         var featuredModelBase: MediaModelBase? = nil
         var pageNum = 1
@@ -141,6 +143,13 @@ extension APIModel {
             print(error)
             return nil
         }
+    }
+}
+
+// fetch detailed
+extension APIModel {
+    func fetchMovie(for id: Int) async {
+        
     }
 }
 

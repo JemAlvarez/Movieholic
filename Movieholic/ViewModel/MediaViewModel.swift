@@ -24,7 +24,7 @@ class MediaViewModel: ObservableObject {
     @MainActor // run on main thread
     func request(for requestType: APIModel.RequestType, in requestCategory: APIModel.RequestCategory, params: [(key: String, value: String)]? = nil, callback: @escaping (MediaModelBase?) -> Void) {
         Task.init {
-            let fetchedData = await APIModel.shared.fetchFeatured(for: requestType, in: requestCategory, params: params)
+            let fetchedData = await APIModel.shared.fetchList(for: requestType, in: requestCategory, params: params)
             
             callback(fetchedData)
         }
