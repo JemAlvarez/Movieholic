@@ -3,7 +3,7 @@
 import SwiftUI
 
 struct CarouselCardView: View {
-    let item: FeaturedModel
+    let item: MediaModel
     
     var body: some View {
         GeometryReader { geo in

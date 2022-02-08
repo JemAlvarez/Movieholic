@@ -11,11 +11,11 @@ struct MainView: View {
                 // different views
                 switch sidebarViewModel.selectedView {
                 case 1:
-                    MoviesView()
+                    MediaView(viewTitle: "Movies", viewType: .movie)
                 case 2:
-                    Text("TV Shows")
+                    MediaView(viewTitle: "TV Shows", viewType: .tv)
                 case 3:
-                    Text("People")
+                    MediaView(viewTitle: "People", viewType: .people)
                 default:
                     FeaturedView()
                 }

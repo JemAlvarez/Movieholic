@@ -6,12 +6,12 @@ struct CarouselView: View {
     @State var currentPageNum = 0
     
     let numButtons: Int
-    @State var items: [FeaturedModel] // items
+    @State var items: [MediaModel] // items
     
     @State var hoveringPrevious = false
     @State var hoveringNext = false
     
-    init(items: [FeaturedModel]) {
+    init(items: [MediaModel]) {
         self.items = items
         self.numButtons = items.count
     }

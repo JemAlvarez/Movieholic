@@ -4,12 +4,12 @@ import SwiftUI
 
 class FeaturedViewModel: ObservableObject {
     // storing data
-    @Published var popular: FeaturedModelBase? = nil
-    @Published var topRated: FeaturedModelBase? = nil
-    @Published var nowPlayingMovies: FeaturedModelBase? = nil
-    @Published var upcomingMovies: FeaturedModelBase? = nil
-    @Published var onAirTVs: FeaturedModelBase? = nil
-    @Published var airingTodayTVs: FeaturedModelBase? = nil
+    @Published var popular: MediaModelBase? = nil
+    @Published var topRated: MediaModelBase? = nil
+    @Published var nowPlayingMovies: MediaModelBase? = nil
+    @Published var upcomingMovies: MediaModelBase? = nil
+    @Published var onAirTVs: MediaModelBase? = nil
+    @Published var airingTodayTVs: MediaModelBase? = nil
     
     // segmented pickers
     @Published var popularSelection = 0
@@ -17,7 +17,7 @@ class FeaturedViewModel: ObservableObject {
     
     // request featured data
     @MainActor // run on main thread
-    func request(for requestType: APIModel.RequestType, in requestCategory: APIModel.RequestCategory, params: [(key: String, value: String)]? = nil, callback: @escaping (FeaturedModelBase?) -> Void) {
+    func request(for requestType: APIModel.RequestType, in requestCategory: APIModel.RequestCategory, params: [(key: String, value: String)]? = nil, callback: @escaping (MediaModelBase?) -> Void) {
         Task.init {
             let fetchedData = await APIModel.shared.fetchFeatured(for: requestType, in: requestCategory, params: params)
             

@@ -2,7 +2,7 @@
 
 import Foundation
 
-struct FeaturedTVDataModel: Decodable { // tv JSON data model
+struct TVListDataModel: Decodable { // tv JSON data model
     let poster_path: String?
     let overview: String
     let genre_ids: [Int]
@@ -13,7 +13,8 @@ struct FeaturedTVDataModel: Decodable { // tv JSON data model
     let vote_average: Double
 }
 
-struct FeaturedTVDataModelBase: Decodable { // base json
+struct TVListDataModelBase: Decodable { // base json
     let page: Int
-    let results: [FeaturedTVDataModel]
+    let results: [TVListDataModel]
+    let total_pages: Int
 }

@@ -10,48 +10,21 @@ class APIModel {
     private let imageBaseUrl = "https://image.tmdb.org/t/p"
     private let posterWidth = "/original"
     private let backdropWidth = "/original"
-    
-    // get movies list
-    func fetchMovies(for requestCategory: RequestCategory, params: [(key: String, value: String)]? = nil) async -> MovieListModelBase? {
-        // array of models for the base model
-        var modelsArray: [MovieListModel] = []
-        
-        // try
-        do {
-            // await private request for movies in category and return nil if not possible
-            guard let movieList = await self.request(requestType: .movie, requestUrl: requestCategory.rawValue, params: params) else {return nil}
-            
-            // decoded json data
-            let decodedMoviesListData = try JSONDecoder().decode(MovieListDataModelBase.self, from: movieList)
-            
-            for model in decodedMoviesListData.results {
-                let movieListModel = MovieListModel(
-                    posterUrl: model.poster_path == nil ? nil : "\(imageBaseUrl)\(posterWidth)\(model.poster_path!)",
-                    releaseDate: model.release_date.getDate(format: "yy-MM-dd"),
-                    id: model.id,
-                    title: model.title,
-                    voteAverage: model.vote_average
-                )
-                
-                modelsArray.append(movieListModel)
-            }
-            
-            return MovieListModelBase(page: decodedMoviesListData.page, results: modelsArray, totalPages: decodedMoviesListData.total_pages)
-        } catch {
-            // print error and return nil
-            print(error.localizedDescription)
-            return nil
-        }
-    }
-    
+}
+
+//MARK: - requests
+extension APIModel {
     // get featured movies and tv
-    func fetchFeatured(for requestType: RequestType, in requestCategory: RequestCategory, params: [(key: String, value: String)]? = nil) async -> FeaturedModelBase? {
+    func fetchFeatured(for requestType: RequestType, in requestCategory: RequestCategory, params: [(key: String, value: String)]? = nil) async -> MediaModelBase? {
         // initial base model & page number
-        var featuredModelBase: FeaturedModelBase? = nil
+        var featuredModelBase: MediaModelBase? = nil
         var pageNum = 1
         
         // initial array of featured model
-        var featuredModelArray: [FeaturedModel] = []
+        var featuredModelArray: [MediaModel] = []
+        
+        // total pages
+        var totalPages = 0
         
         // try
         do {
@@ -61,7 +34,10 @@ class APIModel {
             // if movie decode movie data model, else decode tv data model
             if requestType == .movie {
                 // json decoded data
-                let decodedFeaturedData = try JSONDecoder().decode(FeaturedMoviesDataModelBase.self, from: featuredData)
+                let decodedFeaturedData = try JSONDecoder().decode(MoviesListDataModelBase.self, from: featuredData)
+                
+                // set total pages
+                totalPages = decodedFeaturedData.total_pages
                 
                 // loop through all decoded models
                 for dataModel in decodedFeaturedData.results {
@@ -69,7 +45,7 @@ class APIModel {
                     let genres = getGenres(for: dataModel.genre_ids)
                     
                     // generate featured model from decoded json data
-                    let featuredModel = FeaturedModel(
+                    let featuredModel = MediaModel(
                         id: dataModel.id,
                         posterUrl: dataModel.poster_path == nil ? nil : "\(imageBaseUrl)\(posterWidth)\(dataModel.poster_path!)",
                         backdropUrl: dataModel.backdrop_path == nil ? nil : "\(imageBaseUrl)\(backdropWidth)\(dataModel.backdrop_path!)",
@@ -89,7 +65,10 @@ class APIModel {
                 }
             } else if requestType == .tv {
                 // json decoded data
-                let decodedFeaturedData = try JSONDecoder().decode(FeaturedTVDataModelBase.self, from: featuredData)
+                let decodedFeaturedData = try JSONDecoder().decode(TVListDataModelBase.self, from: featuredData)
+                
+                // set total pages
+                totalPages = decodedFeaturedData.total_pages
                 
                 // loop through all decoded models
                 for dataModel in decodedFeaturedData.results {
@@ -97,7 +76,7 @@ class APIModel {
                     let genres = getGenres(for: dataModel.genre_ids)
                     
                     // generate featured model from decoded json data
-                    let featuredModel = FeaturedModel(
+                    let featuredModel = MediaModel(
                         id: dataModel.id,
                         posterUrl: dataModel.poster_path == nil ? nil : "\(imageBaseUrl)\(posterWidth)\(dataModel.poster_path!)",
                         backdropUrl: dataModel.backdrop_path == nil ? nil : "\(imageBaseUrl)\(backdropWidth)\(dataModel.backdrop_path!)",
@@ -118,7 +97,7 @@ class APIModel {
             }
             
             // make the base model to return
-            featuredModelBase = FeaturedModelBase(page: pageNum, results: featuredModelArray)
+            featuredModelBase = MediaModelBase(page: pageNum, results: featuredModelArray, totalPages: totalPages)
             
             return featuredModelBase
         } catch {

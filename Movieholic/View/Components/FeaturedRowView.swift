@@ -3,7 +3,7 @@
 import SwiftUI
 
 struct FeaturedRowView: View {
-    let data: FeaturedModelBase?
+    let data: MediaModelBase?
     
     var body: some View {
         VStack {
@@ -12,7 +12,7 @@ struct FeaturedRowView: View {
                     if data != nil {
                         ForEach(data!.results.indices) { i in
                             if let item = data!.results[i] {
-                                FeaturedCardView(item: item)
+                                MediaCardView(item: item)
                                     .padding(.leading, i == 0 ? Sizes.leftPaddingSidebarShrunk : 0)
                             }
                         }

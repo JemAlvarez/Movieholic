@@ -2,8 +2,8 @@
 
 import SwiftUI
 
-struct FeaturedCardView: View {
-    var item: FeaturedModel
+struct MediaCardView: View {
+    var item: MediaModel
     @State var hovering = false
     
     var body: some View {
@@ -29,7 +29,7 @@ struct FeaturedCardView: View {
     }
 }
 
-extension FeaturedCardView {
+extension MediaCardView {
     func image() -> some View {
         AsyncImage(url: URL(string: item.posterUrl ?? "")) { img in
             img
@@ -50,12 +50,20 @@ extension FeaturedCardView {
     }
     
     func info() -> some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 5) {
             Group {
                 if item.movieTitle != nil {
                     Text(item.movieTitle!)
+                    
+                    Text(item.releaseDate?.getString(format: "MMM d, yyyy") ?? "-")
+                        .font(.subheadline)
+                        .opacity(0.7)
                 } else if item.tvName != nil {
                     Text(item.tvName!)
+                    
+                    Text(item.firstAirDate?.getString(format: "MMM d, yyyy") ?? "-")
+                        .font(.subheadline)
+                        .opacity(0.7)
                 }
             }
             .padding(.leading, 15)

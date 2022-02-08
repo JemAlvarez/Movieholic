@@ -94,7 +94,7 @@ struct FeaturedView: View {
 }
 
 extension FeaturedView {
-    func rowTitle(title: String, spacer: Bool = true, data: FeaturedModelBase?) -> some View {
+    func rowTitle(title: String, spacer: Bool = true, data: MediaModelBase?) -> some View {
         HStack {
             if data == nil { // if data hasnt loaded show progress view
                 ProgressView()
@@ -111,7 +111,7 @@ extension FeaturedView {
         .padding(.leading, Sizes.leftPaddingSidebarShrunk)
     }
     
-    func rowTitleWithSelection(title: String, selection: Binding<Int>, data: FeaturedModelBase?) -> some View {
+    func rowTitleWithSelection(title: String, selection: Binding<Int>, data: MediaModelBase?) -> some View {
         HStack {
             rowTitle(title: title, spacer: false, data: data)
             

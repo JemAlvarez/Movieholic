@@ -2,8 +2,11 @@
 
 import SwiftUI
 
-struct MoviesView: View {
-    @StateObject var vm = MoviesViewModel()
+struct MediaView: View {
+    let viewTitle: String
+    let viewType: APIModel.RequestType
+    
+    @StateObject var vm = MediaViewModel()
     @State var columns = [GridItem()]
     @State var width: CGFloat = Sizes.minWidth
     
@@ -14,12 +17,12 @@ struct MoviesView: View {
             headerView()
             
             ScrollView {
-                moviesGridView()
+                mediaGridView()
                 
                 Spacer()
                 
-                if vm.movies != nil {
-                    PaginationView(currentPage: $vm.pageNum, totalPages: vm.movies!.totalPages)
+                if vm.items != nil {
+                    PaginationView(currentPage: $vm.pageNum, totalPages: vm.items!.totalPages)
                 }
                 
                 FooterAttributionView()
@@ -44,43 +47,54 @@ struct MoviesView: View {
             }
         }
         .onChange(of: vm.category) { newVal in
-            vm.request(for: vm.category, params: [("page", "1")]) { data in
-                vm.movies = data
+            vm.request(for: viewType, in: vm.category, params: [("page", "1")]) { data in
+                vm.items = data
             }
         }
         .task {
-            vm.request(for: vm.category, params: [("page", "1")]) { data in
-                vm.movies = data
+            vm.request(for: viewType, in: vm.category, params: [("page", "1")]) { data in
+                vm.items = data
             }
+        }
+        .onAppear {
+            vm.requestType = viewType
         }
     }
 }
 
-extension MoviesView {
+extension MediaView {
     func headerView() -> some View {
         HStack {
-            Text("Movies")
+            Text(viewTitle)
                 .font(.largeTitle)
             
-            Picker("", selection: $vm.category) {
-                Text("Popular").tag(APIModel.RequestCategory.popular)
-                Text("Top Rated").tag(APIModel.RequestCategory.topRated)
-                Text("Now Playing").tag(APIModel.RequestCategory.nowPlayingMovies)
-                Text("Upcoming").tag(APIModel.RequestCategory.upcomingMovies)
+            if viewType != .people { // show no picker for poeple
+                Picker("", selection: $vm.category) {
+                    Text("Popular").tag(APIModel.RequestCategory.popular)
+                    Text("Top Rated").tag(APIModel.RequestCategory.topRated)
+                    
+                    if viewType == .movie {
+                        Text("Now Playing").tag(APIModel.RequestCategory.nowPlayingMovies)
+                        Text("Upcoming").tag(APIModel.RequestCategory.upcomingMovies)
+                    } else if viewType == .tv {
+                        Text("On the Air").tag(APIModel.RequestCategory.onAirTVs)
+                        Text("Airing Today").tag(APIModel.RequestCategory.airingTodayTVs)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 435)
             }
-            .pickerStyle(.segmented)
-            .frame(width: 435)
             
             Spacer()
         }
         .padding(.leading)
     }
     
-    func moviesGridView() -> some View {
+    func mediaGridView() -> some View {
         LazyVGrid(columns: columns, spacing: Sizes.cardSpacing) {
-            if vm.movies != nil {
-                ForEach(vm.movies!.results) { movie in
-                    MoviesCardView(item: movie)
+            if vm.items != nil {
+                ForEach(vm.items!.results) { item in
+                    MediaCardView(item: item)
                 }
             }
         }

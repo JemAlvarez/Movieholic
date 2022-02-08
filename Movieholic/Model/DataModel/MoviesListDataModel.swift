@@ -2,7 +2,7 @@
 
 import Foundation
 
-struct FeaturedMoviesDataModel: Decodable { // movie JSON data model
+struct MoviesListDataModel: Decodable { // movie JSON data model
     let poster_path: String?
     let overview: String
     let genre_ids: [Int]
@@ -13,7 +13,8 @@ struct FeaturedMoviesDataModel: Decodable { // movie JSON data model
     let vote_average: Double
 }
 
-struct FeaturedMoviesDataModelBase: Decodable { // base json
+struct MoviesListDataModelBase: Decodable { // base json
     let page: Int
-    let results: [FeaturedMoviesDataModel]
+    let results: [MoviesListDataModel]
+    let total_pages: Int
 }
