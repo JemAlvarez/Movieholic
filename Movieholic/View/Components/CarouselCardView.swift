@@ -40,13 +40,15 @@ extension CarouselCardView {
             HStack { // hstakc view to move to the left
                 VStack(alignment: .leading, spacing: 20) { // vertically stacked info
                     HStack {
-                        ForEach(item.genres, id: \.self) { genre in
-                            GenreTagView(genre: genre)
+                        if item.genres != nil {
+                            ForEach(item.genres!, id: \.self) { genre in
+                                GenreTagView(genre: genre)
+                            }
                         }
                         
                         Spacer()
                         
-                        VoteProgressView(value: item.voteAverage)
+                        VoteProgressView(value: item.voteAverage ?? 0)
                     }
                     
                     HStack {
@@ -54,7 +56,7 @@ extension CarouselCardView {
                             .font(.largeTitle)
                     }
                     
-                    Text(item.overview)
+                    Text(item.overview ?? "-")
                         .multilineTextAlignment(.leading)
                         .lineSpacing(10)
                 }

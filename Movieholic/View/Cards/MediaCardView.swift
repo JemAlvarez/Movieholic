@@ -11,9 +11,11 @@ struct MediaCardView: View {
             ZStack {
                 image()
                 
-                voteProgress()
+                if item.peopleName == nil { // if its not a people fetch
+                    voteProgress()
+                }
             }
-            .frame(height: Sizes.mediaCardSize.height)
+            .frame(width: Sizes.mediaCardSize.width, height: Sizes.mediaCardSize.height)
             .background(
                 VisualEffect(material: .menu, blendingMode: .behindWindow)
                     .cornerRadius(13)
@@ -31,7 +33,11 @@ struct MediaCardView: View {
 
 extension MediaCardView {
     func image() -> some View {
-        AsyncImage(url: URL(string: item.posterUrl ?? "")) { img in
+        AsyncImage(url:
+                    // if people
+                   item.peopleName != nil ? URL(string: item.peopleProfileURL ?? "") :
+                    URL(string: item.posterUrl ?? "")
+        ) { img in
             img
                 .resizable()
                 .aspectRatio(contentMode: .fill)
@@ -44,7 +50,7 @@ extension MediaCardView {
     }
     
     func voteProgress() -> some View {
-        VoteProgressView(value: item.voteAverage)
+        VoteProgressView(value: item.voteAverage ?? 0)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing) // take the whole available space and align top right
             .offset(x: 5, y: -10) // offset a little
     }
@@ -64,6 +70,8 @@ extension MediaCardView {
                     Text(item.firstAirDate?.getString(format: "MMM d, yyyy") ?? "-")
                         .font(.subheadline)
                         .opacity(0.7)
+                } else if item.peopleName != nil {
+                    Text(item.peopleName!)
                 }
             }
             .padding(.leading, 15)

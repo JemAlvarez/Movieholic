@@ -8,18 +8,20 @@ import Foundation
 struct MediaModel: Identifiable {
     let id: Int
     
-    let posterUrl: String?
-    let backdropUrl: String?
+    let posterUrl: String? // tv/movie
+    let backdropUrl: String? // tv/movie
+    let peopleProfileURL: String? // people
     
     let releaseDate: Date? // movie
     let firstAirDate: Date? // tv show
     
     let tvName: String? // tv show
     let movieTitle: String? // movie
+    let peopleName: String? // people
     
-    let overview: String
-    let genres: [String]
-    let voteAverage: Double
+    let overview: String?
+    let genres: [String]?
+    let voteAverage: Double?
 }
 
 struct MediaModelBase {

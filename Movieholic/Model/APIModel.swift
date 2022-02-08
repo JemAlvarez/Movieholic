@@ -10,6 +10,7 @@ class APIModel {
     private let imageBaseUrl = "https://image.tmdb.org/t/p"
     private let posterWidth = "/original"
     private let backdropWidth = "/original"
+    private let profileWidth = "/original"
 }
 
 //MARK: - requests
@@ -49,10 +50,12 @@ extension APIModel {
                         id: dataModel.id,
                         posterUrl: dataModel.poster_path == nil ? nil : "\(imageBaseUrl)\(posterWidth)\(dataModel.poster_path!)",
                         backdropUrl: dataModel.backdrop_path == nil ? nil : "\(imageBaseUrl)\(backdropWidth)\(dataModel.backdrop_path!)",
+                        peopleProfileURL: nil,
                         releaseDate: dataModel.release_date.getDate(format: "yy-MM-dd"),
                         firstAirDate: nil,
                         tvName: nil,
                         movieTitle: dataModel.title,
+                        peopleName: nil,
                         overview: dataModel.overview,
                         genres: genres,
                         voteAverage: dataModel.vote_average)
@@ -80,13 +83,45 @@ extension APIModel {
                         id: dataModel.id,
                         posterUrl: dataModel.poster_path == nil ? nil : "\(imageBaseUrl)\(posterWidth)\(dataModel.poster_path!)",
                         backdropUrl: dataModel.backdrop_path == nil ? nil : "\(imageBaseUrl)\(backdropWidth)\(dataModel.backdrop_path!)",
+                        peopleProfileURL: nil,
                         releaseDate: nil,
                         firstAirDate: dataModel.first_air_date.getDate(format: "yy-MM-dd"),
                         tvName: dataModel.name,
                         movieTitle: nil,
+                        peopleName: nil,
                         overview: dataModel.overview,
                         genres: genres,
                         voteAverage: dataModel.vote_average)
+                    
+                    // data created model to array of models
+                    featuredModelArray.append(featuredModel)
+                    
+                    // set the page num to use in base model returned
+                    pageNum = decodedFeaturedData.page
+                }
+            } else if requestType == .people {
+                // json decoded data
+                let decodedFeaturedData = try JSONDecoder().decode(PeopleListDataModelBase.self, from: featuredData)
+                
+                // set total pages
+                totalPages = decodedFeaturedData.total_pages
+                
+                // loop through all decoded models
+                for dataModel in decodedFeaturedData.results {
+                    // generate featured model from decoded json data
+                    let featuredModel = MediaModel(
+                        id: dataModel.id,
+                        posterUrl: nil,
+                        backdropUrl: nil,
+                        peopleProfileURL: dataModel.profile_path == nil ? nil : "\(imageBaseUrl)\(profileWidth)\(dataModel.profile_path!)",
+                        releaseDate: nil,
+                        firstAirDate: nil,
+                        tvName: nil,
+                        movieTitle: nil,
+                        peopleName: dataModel.name,
+                        overview: nil,
+                        genres: nil,
+                        voteAverage: nil)
                     
                     // data created model to array of models
                     featuredModelArray.append(featuredModel)
@@ -103,6 +138,7 @@ extension APIModel {
         } catch {
             // print error and return nil
             print(error.localizedDescription)
+            print(error)
             return nil
         }
     }
@@ -136,6 +172,7 @@ extension APIModel {
         } catch {
             // print error if any and return nil in function
             print(error.localizedDescription)
+            print(error)
             return nil
         }
     }
