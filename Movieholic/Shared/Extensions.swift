@@ -39,6 +39,7 @@ extension View { // get window/screensize size
                     completion((newValue, geo.size.height))
                 }
                 .onChange(of: geo.size.height, perform: { newValue in
+                    print("height", newValue)
                     completion((geo.size.width, newValue))
                 })
                 .onAppear {
