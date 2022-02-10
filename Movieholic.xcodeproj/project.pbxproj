@@ -46,6 +46,7 @@
 		CA32B0D527B23E490047AF76 /* MovieDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32B0D427B23E490047AF76 /* MovieDetailView.swift */; };
 		CA32B0DA27B2414A0047AF76 /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32B0D927B2414A0047AF76 /* Routes.swift */; };
 		CA32B0DD27B246740047AF76 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32B0DC27B246740047AF76 /* Router.swift */; };
+		CA32B0DF27B4CDB40047AF76 /* MovieDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32B0DE27B4CDB40047AF76 /* MovieDetailViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +91,7 @@
 		CA32B0D427B23E490047AF76 /* MovieDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailView.swift; sourceTree = "<group>"; };
 		CA32B0D927B2414A0047AF76 /* Routes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
 		CA32B0DC27B246740047AF76 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		CA32B0DE27B4CDB40047AF76 /* MovieDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +152,7 @@
 				CA32B0A427AB34B40047AF76 /* Cards */,
 				CA0BF94827A39E4A00DBB54B /* Shared */,
 				CA32B0C427B216E60047AF76 /* MediaView.swift */,
+				CA32B0D427B23E490047AF76 /* MovieDetailView.swift */,
 				CA25F90827A4AF72000735EB /* FeaturedView.swift */,
 			);
 			path = View;
@@ -162,6 +165,7 @@
 				CA25F90F27A4B1F7000735EB /* SearchbarViewModel.swift */,
 				CA32B09527A78CC90047AF76 /* FeaturedViewModel.swift */,
 				CA32B0C627B217120047AF76 /* MediaViewModel.swift */,
+				CA32B0DE27B4CDB40047AF76 /* MovieDetailViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -199,7 +203,6 @@
 				CA0BF95627A3CB4200DBB54B /* MainView.swift */,
 				CA25F90D27A4B10C000735EB /* SearchbarView.swift */,
 				CA32B0A827AB4C0B0047AF76 /* FooterAttributionView.swift */,
-				CA32B0D427B23E490047AF76 /* MovieDetailView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -348,6 +351,7 @@
 				CA32B0A127AAE84C0047AF76 /* GenreTagView.swift in Sources */,
 				CA32B0DA27B2414A0047AF76 /* Routes.swift in Sources */,
 				CA0BF93627A39D1B00DBB54B /* MovieholicApp.swift in Sources */,
+				CA32B0DF27B4CDB40047AF76 /* MovieDetailViewModel.swift in Sources */,
 				CA25F90927A4AF72000735EB /* FeaturedView.swift in Sources */,
 				CA32B0C727B217120047AF76 /* MediaViewModel.swift in Sources */,
 				CA25F91027A4B1F7000735EB /* SearchbarViewModel.swift in Sources */,

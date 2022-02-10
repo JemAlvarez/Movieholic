@@ -25,9 +25,12 @@ struct Sizes {
     static let minWidth: CGFloat = 700
     static let minHeight: CGFloat = 750
     
-    // carousel height
-    static let carouselHeight: CGFloat = 700
+    // backdrop image height
+    static let backdropHeight: CGFloat = 700
     
     // spcaing for the cards vertically
     static let cardSpacing: CGFloat = 30
+    
+    // buttons sizes
+    static let navButtonSize: CGFloat = 40
 }

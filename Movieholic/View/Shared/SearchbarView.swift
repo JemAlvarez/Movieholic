@@ -17,20 +17,15 @@ struct SearchbarView: View {
                     
                     toggleSearchbarButton() // toggle searchbar
                 }
-                .frame(maxWidth: vm.showingBar ? Sizes.searchbarWidth * 1.5 : 40)
-                .frame(height: 40)
+                .frame(maxWidth: vm.showingBar ? Sizes.searchbarWidth * 1.5 : Sizes.navButtonSize)
+                .frame(height: Sizes.navButtonSize)
                 .background(VisualEffect(material: .popover, blendingMode: .withinWindow).clipShape(Capsule()))
             }
             
             Spacer() // move up
         }
         .padding()
-    }
-}
-
-struct SearchBarView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchbarView()
+        .ignoresSafeArea()
     }
 }
 

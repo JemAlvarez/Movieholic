@@ -41,7 +41,7 @@ extension CarouselView {
             }
             .offset(x: -geo.size.width) // offset to second item so the wrapping of the items is not noticeable
         }
-        .frame(height: Sizes.carouselHeight) // carousel height
+        .frame(height: Sizes.backdropHeight) // carousel height
         .background(VisualEffect(material: .menu, blendingMode: .behindWindow)) // material backgroud visible when images loading
     }
     

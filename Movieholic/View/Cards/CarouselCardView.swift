@@ -17,7 +17,7 @@ struct CarouselCardView: View {
                     
                     info(geo: geo)
                 }
-                .frame(height: Sizes.carouselHeight)
+                .frame(height: Sizes.backdropHeight)
             }
             .buttonStyle(.borderless)
             .onHover { hovering in
@@ -29,17 +29,23 @@ struct CarouselCardView: View {
 
 extension CarouselCardView {
     func splashImage(geo: GeometryProxy) -> some View {
-        AsyncImage(url: URL(string: item.backdropUrl ?? "")) { img in
+        AsyncImage(url: URL(string:
+                                // if it has backdrop
+                            item.backdropUrl != nil ? item.backdropUrl! : (
+                                // if no backdrop and it has a poster
+                                item.posterUrl != nil ? item.posterUrl! : ""
+                            )
+                           )) { img in
             img
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: geo.size.width, height: Sizes.carouselHeight)
+                .frame(width: geo.size.width, height: Sizes.backdropHeight)
                 .clipped()
         } placeholder: {
             Image(systemName: "photo.on.rectangle.angled")
                .font(.largeTitle)
                .offset(y: -200)
-               .frame(height: Sizes.carouselHeight)
+               .frame(height: Sizes.backdropHeight)
         }
     }
     

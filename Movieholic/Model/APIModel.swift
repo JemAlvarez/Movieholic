@@ -11,7 +11,9 @@ class APIModel {
     private let posterWidth = "/original"
     private let backdropWidth = "/original"
     private let profileWidth = "/original"
-    private let youtube = "https://youtube.com/watch?v="
+    private let logoWidth = "/original"
+    private let youtubeBaseUrl = "https://youtube.com/watch?v="
+    private let tmdbDateFormat = "yy-MM-dd"
 }
 
 //MARK: - requests
@@ -53,7 +55,7 @@ extension APIModel {
                         posterUrl: dataModel.poster_path == nil ? nil : "\(imageBaseUrl)\(posterWidth)\(dataModel.poster_path!)",
                         backdropUrl: dataModel.backdrop_path == nil ? nil : "\(imageBaseUrl)\(backdropWidth)\(dataModel.backdrop_path!)",
                         peopleProfileURL: nil,
-                        releaseDate: dataModel.release_date.getDate(format: "yy-MM-dd"),
+                        releaseDate: dataModel.release_date.getDate(format: tmdbDateFormat),
                         firstAirDate: nil,
                         tvName: nil,
                         movieTitle: dataModel.title,
@@ -87,7 +89,7 @@ extension APIModel {
                         backdropUrl: dataModel.backdrop_path == nil ? nil : "\(imageBaseUrl)\(backdropWidth)\(dataModel.backdrop_path!)",
                         peopleProfileURL: nil,
                         releaseDate: nil,
-                        firstAirDate: dataModel.first_air_date.getDate(format: "yy-MM-dd"),
+                        firstAirDate: dataModel.first_air_date.getDate(format: tmdbDateFormat),
                         tvName: dataModel.name,
                         movieTitle: nil,
                         peopleName: nil,
@@ -148,8 +150,122 @@ extension APIModel {
 
 // fetch detailed
 extension APIModel {
-    func fetchMovie(for id: Int) async {
+    func fetchMovie(for id: Int) async -> MovieModel? {
+        // movie/id - details
+        guard let movieDetailData = await self.request(requestType: .movie, requestUrl: "/\(id)", params: nil) else {return nil}
         
+        // movie/id/credits - movie cast
+        guard let movieCreditsData = await self.request(requestType: .movie, requestUrl: "/\(id)/credits", params: nil) else {return nil}
+        
+        //  movie/id/recommendations
+        guard let movieRecommendationsData = await self.request(requestType: .movie, requestUrl: "/\(id)/recommendations", params: nil) else {return nil}
+        
+        //  movie/id/videos
+        guard let movieVideosData = await self.request(requestType: .movie, requestUrl: "/\(id)/videos", params: nil) else {return nil}
+        
+        do {
+            // json decoded movie details
+            let decodedMovieDetails = try JSONDecoder().decode(MovieDetailModel.self, from: movieDetailData)
+            
+            // json decoded movie credits
+            let decodedMovieCredits = try JSONDecoder().decode(MovieCreditsModel.self, from: movieCreditsData)
+            
+            // json decoded movie recommendations
+            let decodedMovieRecommendations = try JSONDecoder().decode(MovieRecommendationsModel.self, from: movieRecommendationsData)
+            
+            // json decoded movie videos
+            let decodedMovieVideos = try JSONDecoder().decode(MovieVideoModel.self, from: movieVideosData)
+            
+            // movie trailer
+            var movieTrailer: String? = nil
+            // movie companies
+            var movieCompanies: [MovieModel.ProductionCompany] = []
+            // movie cast
+            var movieCast: [MovieModel.Cast] = []
+            // movie recommendations
+            var movieRecommendations: [MovieModel.Recommendation] = []
+            
+            // get movie companies
+            for company in decodedMovieDetails.production_companies {
+                let newCompany = MovieModel.ProductionCompany(
+                    name: company.name,
+                    id: company.id,
+                    logoPath: company.logo_path != nil ? "\(imageBaseUrl)\(logoWidth)\(company.logo_path!)" : ""
+                )
+                
+                movieCompanies.append(newCompany)
+            }
+            
+            // get movie cast
+            for cast in decodedMovieCredits.cast {
+                let newCastMemeber = MovieModel.Cast(
+                    id: cast.id,
+                    name: cast.name,
+                    profilePath: cast.profile_path != nil ? "\(imageBaseUrl)\(profileWidth)\(cast.profile_path!)" : "",
+                    character: cast.character)
+                
+                movieCast.append(newCastMemeber)
+            }
+            
+            // get movie recommendations
+            for recommendation in decodedMovieRecommendations.results {
+                let newRecommendation = MovieModel.Recommendation(
+                    posterPath: recommendation.poster_path != nil ? "\(imageBaseUrl)\(profileWidth)\(recommendation.poster_path!)" : "",
+                    releaseDate: recommendation.release_date.getDate(format: tmdbDateFormat),
+                    id: recommendation.id,
+                    title: recommendation.title,
+                    backdropPath: recommendation.backdrop_path != nil ? "\(imageBaseUrl)\(profileWidth)\(recommendation.backdrop_path!)" : "",
+                    voteAverage: recommendation.vote_average
+                )
+                
+                movieRecommendations.append(newRecommendation)
+            }
+            
+            // get movie trailer
+            // if movie has vide
+            if decodedMovieDetails.video {
+                
+                // for each video fetched and decoded
+                for video in decodedMovieVideos.results {
+                    if video.site.lowercased() == "youtube" && video.type.lowercased() == "trailer" { // if the video source is youtube and type is trailer
+                        
+                        // send that video url to the model
+                        movieTrailer = "\(youtubeBaseUrl)\(video.key)"
+                        break
+                    }
+                }
+            }
+            
+            // return model suitable for app
+            return MovieModel(
+                adult: decodedMovieDetails.adult,
+                backdropURL: decodedMovieDetails.backdrop_path == nil ? "" : "\(imageBaseUrl)\(backdropWidth)\(decodedMovieDetails.backdrop_path!)",
+                budget: decodedMovieDetails.budget,
+                genres: decodedMovieDetails.genres,
+                homepage: decodedMovieDetails.homepage,
+                imdbID: decodedMovieDetails.imdb_id,
+                originalLanguage: decodedMovieDetails.original_language,
+                originalTitle: decodedMovieDetails.original_title,
+                overview: decodedMovieDetails.overview,
+                posterURL: decodedMovieDetails.poster_path == nil ? "" :
+                    "\(imageBaseUrl)\(posterWidth)\(decodedMovieDetails.poster_path!)",
+                productionCompanies: movieCompanies,
+                releaseDate: decodedMovieDetails.release_date.getDate(format: tmdbDateFormat),
+                revenue: decodedMovieDetails.revenue,
+                runtime: decodedMovieDetails.runtime,
+                tagline: decodedMovieDetails.tagline,
+                title: decodedMovieDetails.title,
+                video: decodedMovieDetails.video,
+                voteAverage: decodedMovieDetails.vote_average,
+                cast: movieCast,
+                recommendations: movieRecommendations,
+                trailerURL: movieTrailer
+            )
+        } catch {
+            print(error.localizedDescription)
+            print(error)
+            return nil
+        }
     }
 }
 

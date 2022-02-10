@@ -31,6 +31,25 @@ extension View { // change cursor
     }
 }
 
+extension View { // get window/screensize size
+    func getViewSize(completion: @escaping ((width: CGFloat, height: CGFloat)) -> Void) -> some View {
+        GeometryReader { geo in
+            Text("")
+                .onChange(of: geo.size.width) { newValue in
+                    completion((newValue, geo.size.height))
+                }
+                .onChange(of: geo.size.height, perform: { newValue in
+                    completion((geo.size.width, newValue))
+                })
+                .onAppear {
+                    completion((geo.size.width, geo.size.height))
+                }
+        }
+        .frame(maxHeight: .infinity)
+    }
+}
+
+//MARK: - Date
 extension Date {
     // get string from date
     func getString(format: String) -> String {
@@ -41,6 +60,7 @@ extension Date {
     }
 }
 
+//MARK: - String
 extension String {
     // get date from string
     func getDate(format: String) -> Date? {
