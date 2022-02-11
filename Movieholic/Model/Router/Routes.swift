@@ -2,7 +2,7 @@
 
 import Foundation
 
-enum Routes {
+enum Routes: Equatable {
     case root
     case movie(id: Int)
     case tv(id: Int)

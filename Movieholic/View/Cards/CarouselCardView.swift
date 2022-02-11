@@ -44,7 +44,6 @@ extension CarouselCardView {
         } placeholder: {
             Image(systemName: "photo.on.rectangle.angled")
                .font(.largeTitle)
-               .offset(y: -200)
                .frame(height: Sizes.backdropHeight)
         }
     }

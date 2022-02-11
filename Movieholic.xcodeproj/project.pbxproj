@@ -47,6 +47,7 @@
 		CA32B0DA27B2414A0047AF76 /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32B0D927B2414A0047AF76 /* Routes.swift */; };
 		CA32B0DD27B246740047AF76 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32B0DC27B246740047AF76 /* Router.swift */; };
 		CA32B0DF27B4CDB40047AF76 /* MovieDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA32B0DE27B4CDB40047AF76 /* MovieDetailViewModel.swift */; };
+		CAFD40FD27B5DAD5007E7457 /* RoutingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFD40FC27B5DAD5007E7457 /* RoutingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +93,7 @@
 		CA32B0D927B2414A0047AF76 /* Routes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
 		CA32B0DC27B246740047AF76 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		CA32B0DE27B4CDB40047AF76 /* MovieDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewModel.swift; sourceTree = "<group>"; };
+		CAFD40FC27B5DAD5007E7457 /* RoutingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +205,7 @@
 				CA0BF95627A3CB4200DBB54B /* MainView.swift */,
 				CA25F90D27A4B10C000735EB /* SearchbarView.swift */,
 				CA32B0A827AB4C0B0047AF76 /* FooterAttributionView.swift */,
+				CAFD40FC27B5DAD5007E7457 /* RoutingView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				CA0BF94C27A3B3DC00DBB54B /* VisualEffect.swift in Sources */,
 				CA32B0AE27AB52640047AF76 /* CarouselView.swift in Sources */,
 				CA32B09F27AAD8B80047AF76 /* RoundedCornerRectangleShape.swift in Sources */,
+				CAFD40FD27B5DAD5007E7457 /* RoutingView.swift in Sources */,
 				CA32B0A927AB4C0B0047AF76 /* FooterAttributionView.swift in Sources */,
 				CA32B09627A78CC90047AF76 /* FeaturedViewModel.swift in Sources */,
 				CA32B0C027AE41340047AF76 /* PaginationView.swift in Sources */,

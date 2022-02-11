@@ -8,7 +8,7 @@ struct MovieModel {
     let budget: Int
     let genres: [MovieDetailModel.Genre]
     let homepage: String?
-    let imdbID: String?
+    let imdbID: String
     let originalLanguage: String
     let originalTitle: String
     let overview: String?
@@ -19,31 +19,30 @@ struct MovieModel {
     let runtime: Int?
     let tagline: String?
     let title: String
-    let video: Bool
     let voteAverage: Double
     let cast: [Cast]
     let recommendations: [Recommendation]
     let trailerURL: String?
     
     struct Recommendation: Codable {
-        let posterPath: String
+        let posterUrl: String
         let releaseDate: Date?
         let id: Int
         let title: String
-        let backdropPath: String
+        let backdropUrl: String
         let voteAverage: Double
     }
     
     struct ProductionCompany: Codable {
         let name: String
         let id: Int
-        let logoPath: String
+        let logoUrl: String
     }
     
     struct Cast: Codable {
         let id: Int
         let name: String
-        let profilePath: String
+        let profileUrl: String
         let character: String
     }
 }
@@ -65,7 +64,6 @@ struct MovieDetailModel: Codable {
     let runtime: Int?
     let tagline: String?
     let title: String
-    let video: Bool
     let vote_average: Double
     
     struct Genre: Codable {

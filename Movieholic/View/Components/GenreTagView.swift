@@ -8,6 +8,7 @@ struct GenreTagView: View {
     var body: some View {
         Text(genre)
             .fontWeight(.medium)
+            .lineLimit(1)
             .padding(.horizontal, 7)
             .padding(.vertical, 3)
             .foregroundColor(Color(Colors.accent.rawValue))

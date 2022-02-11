@@ -50,6 +50,25 @@ extension View { // get window/screensize size
     }
 }
 
+extension View {
+    // routing for inner views
+    func onRouteChange(currentRoute: Routes?, callback: @escaping (Int) -> Void) -> some View {
+        self
+            .onChange(of: currentRoute) { newValue in
+                switch newValue {
+                case .movie(let newId):
+                    callback(newId)
+                case .tv(let newId):
+                    callback(newId)
+                case .people(let newId):
+                    callback(newId)
+                default:
+                    break
+                }
+            }
+    }
+}
+
 //MARK: - Date
 extension Date {
     // get string from date
@@ -69,5 +88,28 @@ extension String {
         formatter.dateFormat = format
         
         return formatter.date(from: self)
+    }
+}
+
+//MARK: - Int
+extension Int {
+    // get hours and minutes
+    func minutesToHoursAndMinutes() -> String {
+        let hours = self / 60
+        let minutes = self % 60
+        
+        if minutes < 10 {
+            return "\(hours):0\(minutes) hrs"
+        } else {
+            return "\(hours):\(minutes) hrs"
+        }
+    }
+    
+    // change to currency format
+    func getCurrencyForamt() -> String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        
+        return self == 0 ? "-" : formatter.string(from: self as NSNumber)
     }
 }

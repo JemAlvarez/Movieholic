@@ -13,6 +13,7 @@ class APIModel {
     private let profileWidth = "/original"
     private let logoWidth = "/original"
     private let youtubeBaseUrl = "https://youtube.com/watch?v="
+    private let imdbBaseUrl = "https://www.imdb.com/title/"
     private let tmdbDateFormat = "yy-MM-dd"
 }
 
@@ -190,7 +191,7 @@ extension APIModel {
                 let newCompany = MovieModel.ProductionCompany(
                     name: company.name,
                     id: company.id,
-                    logoPath: company.logo_path != nil ? "\(imageBaseUrl)\(logoWidth)\(company.logo_path!)" : ""
+                    logoUrl: company.logo_path != nil ? "\(imageBaseUrl)\(logoWidth)\(company.logo_path!)" : ""
                 )
                 
                 movieCompanies.append(newCompany)
@@ -201,7 +202,7 @@ extension APIModel {
                 let newCastMemeber = MovieModel.Cast(
                     id: cast.id,
                     name: cast.name,
-                    profilePath: cast.profile_path != nil ? "\(imageBaseUrl)\(profileWidth)\(cast.profile_path!)" : "",
+                    profileUrl: cast.profile_path != nil ? "\(imageBaseUrl)\(profileWidth)\(cast.profile_path!)" : "",
                     character: cast.character)
                 
                 movieCast.append(newCastMemeber)
@@ -210,11 +211,11 @@ extension APIModel {
             // get movie recommendations
             for recommendation in decodedMovieRecommendations.results {
                 let newRecommendation = MovieModel.Recommendation(
-                    posterPath: recommendation.poster_path != nil ? "\(imageBaseUrl)\(profileWidth)\(recommendation.poster_path!)" : "",
+                    posterUrl: recommendation.poster_path != nil ? "\(imageBaseUrl)\(profileWidth)\(recommendation.poster_path!)" : "",
                     releaseDate: recommendation.release_date.getDate(format: tmdbDateFormat),
                     id: recommendation.id,
                     title: recommendation.title,
-                    backdropPath: recommendation.backdrop_path != nil ? "\(imageBaseUrl)\(profileWidth)\(recommendation.backdrop_path!)" : "",
+                    backdropUrl: recommendation.backdrop_path != nil ? "\(imageBaseUrl)\(profileWidth)\(recommendation.backdrop_path!)" : "",
                     voteAverage: recommendation.vote_average
                 )
                 
@@ -223,18 +224,17 @@ extension APIModel {
             
             // get movie trailer
             // if movie has vide
-            if decodedMovieDetails.video {
-                
-                // for each video fetched and decoded
-                for video in decodedMovieVideos.results {
-                    if video.site.lowercased() == "youtube" && video.type.lowercased() == "trailer" { // if the video source is youtube and type is trailer
-                        
-                        // send that video url to the model
-                        movieTrailer = "\(youtubeBaseUrl)\(video.key)"
-                        break
-                    }
+            // for each video fetched and decoded
+            for video in decodedMovieVideos.results {
+                // if the video source is youtube and type is trailer
+                if video.site.lowercased() == "youtube" && video.type.lowercased() == "trailer" {
+                    // send that video url to the model
+                    movieTrailer = "\(youtubeBaseUrl)\(video.key)"
+                    break
                 }
             }
+            
+//            print(decodedMovieDetails.budget)
             
             // return model suitable for app
             return MovieModel(
@@ -243,7 +243,7 @@ extension APIModel {
                 budget: decodedMovieDetails.budget,
                 genres: decodedMovieDetails.genres,
                 homepage: decodedMovieDetails.homepage,
-                imdbID: decodedMovieDetails.imdb_id,
+                imdbID: decodedMovieDetails.imdb_id == nil ? "" : "\(imdbBaseUrl)\(decodedMovieDetails.imdb_id!)",
                 originalLanguage: decodedMovieDetails.original_language,
                 originalTitle: decodedMovieDetails.original_title,
                 overview: decodedMovieDetails.overview,
@@ -255,7 +255,6 @@ extension APIModel {
                 runtime: decodedMovieDetails.runtime,
                 tagline: decodedMovieDetails.tagline,
                 title: decodedMovieDetails.title,
-                video: decodedMovieDetails.video,
                 voteAverage: decodedMovieDetails.vote_average,
                 cast: movieCast,
                 recommendations: movieRecommendations,

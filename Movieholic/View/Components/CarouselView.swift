@@ -23,6 +23,7 @@ struct CarouselView: View {
             // pagination
             pagination()
         }
+        .foregroundColor(.primary)
         .onReceive(timer) { input in    // timer for autoscrolling
             nextPage()
         }
